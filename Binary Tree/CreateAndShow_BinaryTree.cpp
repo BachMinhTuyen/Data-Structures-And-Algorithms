@@ -2,21 +2,22 @@
 #include<conio.h>
 #include<stdlib.h>
 #include<time.h>
+typedef int ItemType;
 struct TNode
 {
-	int info;
-	TNode* left;
-	TNode* right;
+	ItemType Info;
+	TNode* Left;
+	TNode* Right;
 };
 struct BTree
 {
-	TNode* root;
+	TNode* Root;
 };
 void initBTree(BTree& bt);
-TNode* createTNode(int x);
+TNode* createTNode(ItemType x);
 void showTNode(TNode* p);
 int isEmpty(BTree bt);
-void insertTNode(TNode*& root, TNode* p);
+int insertTNode(TNode*& root, TNode* p);
 void createBTree_Automatic(BTree& bt);
 void createBTree_FromKeyboard(BTree& bt);
 void createBTree_FromArray(BTree& bt);
@@ -31,36 +32,28 @@ int main()
 	BTree bt;
 	//Tạo cây tự động
 	createBTree_Automatic(bt);
-
 	//Tạo cây từ bàn phím
 	//createBTree_FromKeyboard(bt);
-
 	printf("\n\nDuyet theo Node - Left - Right: ");
-	traverseNLR(bt.root);
-
+	traverseNLR(bt.Root);
 	printf("\n\nDuyet theo Node - Right - Left: ");
-	traverseNRL(bt.root);
-
+	traverseNRL(bt.Root);
 	printf("\n\nDuyet theo Left - Node - Right: ");
-	traverseLNR(bt.root);
-
+	traverseLNR(bt.Root);
 	printf("\n\nDuyet theo Left - Right - Node: ");
-	traverseLRN(bt.root);
-
+	traverseLRN(bt.Root);
 	printf("\n\nDuyet theo Right - Node - Left: ");
-	traverseRNL(bt.root);
-
+	traverseRNL(bt.Root);
 	printf("\n\nDuyet theo Right - Left - Node: ");
-	traverseRLN(bt.root);
-
+	traverseRLN(bt.Root);
 	_getch();
 	return 0;
 }
 void initBTree(BTree& bt)
 {
-	bt.root = NULL;
+	bt.Root = NULL;
 }
-TNode* createTNode(int x)
+TNode* createTNode(ItemType x)
 {
 	TNode* p = new TNode;
 	if (p == NULL)
@@ -69,37 +62,37 @@ TNode* createTNode(int x)
 		_getch();
 		return NULL;
 	}
-	p->info = x;
-	p->left = NULL;
-	p->right = NULL;
+	p->Info = x;
+	p->Left = NULL;
+	p->Right = NULL;
 	return p;
 }
 void showTNode(TNode* p)
 {
-	printf("%5d", p->info);
+	printf("%5d", p->Info);
 }
 int isEmpty(BTree bt)
 {
-	if (bt.root == NULL)
+	if (bt.Root == NULL)
 		return 1;//Cây rỗng
 	return 0;//Cây không rỗng
 }
-void insertTNode(TNode*& root, TNode* p)
+int insertTNode(TNode*& root, TNode* p)
 {
 	if (p == NULL)
-		return;
+		return 0;	//Không thành công
 	//Nếu gốc chưa có
 	if (root == NULL)
 	{
 		root = p;
-		return;
+		return 1;	//Thành công
 	}
 	//Nếu chưa có con trái ==> thêm bên trái
-	if (root->left == NULL)
-		insertTNode(root->left, p);
+	if (root->Left == NULL)
+		insertTNode(root->Left, p);
 	//Ngược lại nếu chưa có con phải ==> thêm bên phải
-	else if (root->right == NULL)
-		insertTNode(root->right, p);
+	else if (root->Right == NULL)
+		insertTNode(root->Right, p);
 	//Ngược lại nếu có cả 2 bên trái phải ==> thêm vào cây con
 	else
 	{
@@ -107,15 +100,16 @@ void insertTNode(TNode*& root, TNode* p)
 		int x = rand() % 2;
 		//Nếu ra chẵn ==> thêm vào nhánh bên trái
 		if (x == 0)
-			insertTNode(root->left, p);
+			insertTNode(root->Left, p);
 		//Ngược lại ra lẻ ==> thêm vào nhánh bên phải
 		else
-			insertTNode(root->right, p);
+			insertTNode(root->Right, p);
 	}
+	return 1;	//Thành công
 }
 void createBTree_Automatic(BTree& bt)
 {
-	int n, x;
+	int n;
 	printf("\nNhap so nut cua cay: ");
 	scanf_s("%d", &n);
 
@@ -127,15 +121,16 @@ void createBTree_Automatic(BTree& bt)
 	{
 		//random từ a tới b:  a + rand() % b - a + 1
 		//Tạo số ngẫu nhiên trong đoạn [-99,99]
-		int x = -99 + rand() % 199;
+		ItemType x = -99 + rand() % 199;
 		TNode* p = createTNode(x);
-		insertTNode(bt.root, p);
+		insertTNode(bt.Root, p);
 	}
 	printf("\nDa tao cay thanh cong!");
 }
 void createBTree_FromKeyboard(BTree& bt)
 {
-	int n, x;
+	int n;
+	ItemType x;
 	printf("Nhap so nut cua cay: ");
 	scanf_s("%d", &n);
 
@@ -147,7 +142,7 @@ void createBTree_FromKeyboard(BTree& bt)
 		printf("Nhap nut thu %d: ", i);
 		scanf_s("%d", &x);
 		TNode* p = createTNode(x);
-		insertTNode(bt.root, p);
+		insertTNode(bt.Root, p);
 	}
 }
 void createBTree_FromArray(BTree& bt)
@@ -160,8 +155,8 @@ void traverseNLR(TNode* root)
 	if (root == NULL)
 		return;
 	showTNode(root);
-	traverseNLR(root->left);
-	traverseNLR(root->right);
+	traverseNLR(root->Left);
+	traverseNLR(root->Right);
 }
 //Duyệt cây theo Node - Right - Left (traverse NRL)
 void traverseNRL(TNode* root)
@@ -169,25 +164,25 @@ void traverseNRL(TNode* root)
 	if (root == NULL)
 		return;
 	showTNode(root);
-	traverseNRL(root->right);
-	traverseNRL(root->left);
+	traverseNRL(root->Right);
+	traverseNRL(root->Left);
 }
 //Duyệt cây theo Left - Node - Right (traverse LNR)
 void traverseLNR(TNode* root)
 {
 	if (root == NULL)
 		return;
-	traverseLNR(root->left);
+	traverseLNR(root->Left);
 	showTNode(root);
-	traverseLNR(root->right);
+	traverseLNR(root->Right);
 }
 //Duyệt cây theo Left - Right - Node (traverse LRN)
 void traverseLRN(TNode* root)
 {
 	if (root == NULL)
 		return;
-	traverseLRN(root->left);
-	traverseLRN(root->right);
+	traverseLRN(root->Left);
+	traverseLRN(root->Right);
 	showTNode(root);
 }
 //Duyệt cây theo Right - Node - Left (traverse RNL)
@@ -195,16 +190,16 @@ void traverseRNL(TNode* root)
 {
 	if (root == NULL)
 		return;
-	traverseRNL(root->right);
+	traverseRNL(root->Right);
 	showTNode(root);
-	traverseRNL(root->left);
+	traverseRNL(root->Left);
 }
 //Duyệt cây theo Right - Left - Node (traverse RLN)
 void traverseRLN(TNode* root)
 {
 	if (root == NULL)
 		return;
-	traverseRLN(root->right);
-	traverseRLN(root->left);
+	traverseRLN(root->Right);
+	traverseRLN(root->Left);
 	showTNode(root);
 }
