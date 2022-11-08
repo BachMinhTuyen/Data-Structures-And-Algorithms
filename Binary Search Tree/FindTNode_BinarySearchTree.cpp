@@ -20,6 +20,7 @@ int isEmpty(BSTree bst);
 int insertTNode(TNode*& root, TNode* p);
 void createBSTree_Automatic(BSTree& bst);
 void traverseLNR(TNode* root);
+TNode* findTNodeX_DeQuy(TNode* root, ItemType x);
 TNode* findTNodeX(TNode* root, ItemType x);
 int main()
 {
@@ -116,7 +117,8 @@ void traverseLNR(TNode* root)
 	showTNode(root);
 	traverseLNR(root->Right);
 }
-TNode* findTNodeX(TNode* root, ItemType x)
+//Dùng đệ qui
+TNode* findTNodeX_DeQuy(TNode* root, ItemType x)
 {
 	//(!root) bằng (root == NULL)
 	if (!root)
@@ -124,7 +126,20 @@ TNode* findTNodeX(TNode* root, ItemType x)
 	if (root->Info == x)
 		return root;
 	if (root->Info > x)
-		return findTNodeX(root->Left, x);
+		return findTNodeX_DeQuy(root->Left, x);
 	else
-		return findTNodeX(root->Right, x);
+		return findTNodeX_DeQuy(root->Right, x);
+}
+//Không dùng đệ qui
+TNode* findTNodeX(TNode* root, ItemType x)
+{
+	TNode* p = root;
+	while (p != NULL && p->Info != x)
+	{
+		if (p->Info > x)
+			p = p->Left;
+		else
+			p = p->Right;
+	}
+	return p;
 }
