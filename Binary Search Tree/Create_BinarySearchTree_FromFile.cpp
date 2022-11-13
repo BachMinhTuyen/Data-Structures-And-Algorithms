@@ -104,6 +104,11 @@ void createBSTree_FromFile(BSTree& bst)
 	initBSTree(bst);
 	FILE* f;
 	fopen_s(&f, "DATA.txt", "rt");
+	if (f == NULL)
+	{
+		printf("\nKhong Mo File Thanh Cong!");
+		return;
+	}
 	fscanf_s(f, "%d\n", &n);
 	for (int i = 1; i <= n; i++)
 	{
