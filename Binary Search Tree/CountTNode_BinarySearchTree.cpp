@@ -17,29 +17,24 @@ void showTNode(TNode* p);
 int isEmpty(BSTree bst);
 int insertTNode(TNode*& root, TNode* p);
 void createBSTree_FromFile(BSTree& bst);
-void traverseNLR(TNode* root);
-void traverseNRL(TNode* root);
 void traverseLNR(TNode* root);
-void traverseLRN(TNode* root);
-void traverseRNL(TNode* root);
-void traverseRLN(TNode* root);
+int countTNode(TNode* root);
+int countTNodeLeaf(TNode* root);
+int countTNodeNoLeaf(TNode* root);
+int countTNodeMedium_01(TNode* root);
+int countTNodeMedium_02(TNode* root);
 int main()
 {
 	BSTree bst;
 	//Tạo cây từ file
 	createBSTree_FromFile(bst);
-	printf("\n\nDuyet theo Node - Left - Right: ");
-	traverseNLR(bst.Root);
-	printf("\n\nDuyet theo Node - Right - Left: ");
-	traverseNRL(bst.Root);
-	printf("\n\nDuyet theo Left - Node - Right: ");
 	traverseLNR(bst.Root);
-	printf("\n\nDuyet theo Left - Right - Node: ");
-	traverseLRN(bst.Root);
-	printf("\n\nDuyet theo Right - Node - Left: ");
-	traverseRNL(bst.Root);
-	printf("\n\nDuyet theo Right - Left - Node: ");
-	traverseRLN(bst.Root);
+	printf("\nTong so nut tren cay: %d", countTNode(bst.Root));
+	printf("\nTong so nut la tren cay: %d", countTNodeLeaf(bst.Root));
+	printf("\nTong so nut khong phai nut la tren cay: %d", countTNodeNoLeaf(bst.Root));
+	printf("\nTong so nut trung gian tren cay (cach 1): %d", countTNodeMedium_01(bst.Root));
+	printf("\nTong so nut trung gian tren cay (cach 2): %d", countTNodeMedium_02(bst.Root));
+
 	_getch();
 	return 0;
 }
