@@ -23,9 +23,12 @@ int countTNodeLeaf(TNode* root);
 int countTNodeNoLeaf(TNode* root);
 int countTNodeMedium_01(TNode* root);
 int countTNodeMedium_02(TNode* root);
+int countTNodeX(TNode* root, int x);
+int countTNodeLeafLevelK(TNode* root, int k);
 int main()
 {
 	BSTree bst;
+	int x, k;
 	//Tạo cây từ file
 	createBSTree_FromFile(bst);
 	traverseLNR(bst.Root);
@@ -34,7 +37,10 @@ int main()
 	printf("\nTong so nut khong phai nut la tren cay: %d", countTNodeNoLeaf(bst.Root));
 	printf("\nTong so nut trung gian tren cay (cach 1): %d", countTNodeMedium_01(bst.Root));
 	printf("\nTong so nut trung gian tren cay (cach 2): %d", countTNodeMedium_02(bst.Root));
-
+	printf("\nNhap x = "); scanf_s("%d", &x);
+	printf("\nTong so nut co gia tri bang %d la: %d", x, countTNodeX(bst.Root, x));
+	printf("\nNhap muc k = "); scanf_s("%d", &k);
+	printf("\nTong so nut o muc %d la: %d", k, countTNodeLeafLevelK(bst.Root, k));
 	_getch();
 	return 0;
 }
@@ -173,4 +179,27 @@ int countTNodeMedium_02(TNode* root)
 	if (n > 0)
 		return n - 1;
 	return 0;
+}
+//Đếm số nút có giá trị = x
+int countTNodeX(TNode* root, int x)
+{
+	if (!root)
+		return 0;
+	int nlx = countTNodeX(root->Left, x);
+	int nrx = countTNodeX(root->Right, x);
+	if (root->Info == x)
+		return 1 + nlx + nrx;
+	return nlx + nrx;
+}
+//Đếm các nút lá ở mức k
+int countTNodeLeafLevelK(TNode* root, int k)
+{
+	if (!root)
+		return 0;
+	if (k == 0 && !root->Left && !root->Right)
+		return 1;
+	k--; //mức k giảm dần về 0
+	int nl = countTNodeLeafLevelK(root->Left, k);
+	int nr = countTNodeLeafLevelK(root->Right, k);
+	return nl + nr;
 }
