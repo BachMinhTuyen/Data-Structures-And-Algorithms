@@ -20,7 +20,8 @@ int isEmpty(BSTree bst);
 int insertTNode(TNode*& root, TNode* p);
 void createBSTree_Automatic(BSTree& bst);
 void createBSTree_FromKeyboard(BSTree& bst);
-void createBSTree_FromArray(BSTree& bst);
+void nhapMang(int a[], int& n);
+void createBSTree_FromArray(BSTree& bst, ItemType a[], int n);
 void traverseNLR(TNode* root);
 void traverseNRL(TNode* root);
 void traverseLNR(TNode* root);
@@ -30,10 +31,18 @@ void traverseRLN(TNode* root);
 int main()
 {
 	BSTree bst;
+	ItemType arr[100];
+	int n;
 	//Tạo cây tự động
 	createBSTree_Automatic(bst);
+	
 	//Tạo cây từ bàn phím
 	//createBSTree_FromKeyboard(bst);
+
+	//Tạo cây từ mảng
+	//nhapMang(arr, n);
+	//createBSTree_FromArray(bst, arr, n);
+
 	printf("\n\nDuyet theo Node - Left - Right: ");
 	traverseNLR(bst.Root);
 	printf("\n\nDuyet theo Node - Right - Left: ");
@@ -132,9 +141,25 @@ void createBSTree_FromKeyboard(BSTree& bst)
 		insertTNode(bst.Root, p);
 	}
 }
-void createBSTree_FromArray(BSTree& bst)
+void nhapMang(int a[], int& n)
 {
-
+	do {
+		printf(">> Nhap so luong phan tu n (n > 0): "); scanf_s("%d", &n);
+	} while (n <= 0);
+	for (int i = 0; i < n; i++)
+	{
+		printf("a[%d]= ", i);
+		scanf_s("%d", &a[i]);
+	}
+}
+void createBSTree_FromArray(BSTree& bst, ItemType a[], int n)
+{//Ham tao cay Black-Red Tree tu mang a
+	initBSTree(bst);
+	for (int i = 0; i < n; i++)
+	{
+		TNode* p = createTNode(a[i]);
+		insertTNode(bst.Root, p);
+	}
 }
 //Duyệt cây theo Node - Left - Right (traverse NLR)
 void traverseNLR(TNode* root)
